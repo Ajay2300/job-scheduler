@@ -24,6 +24,14 @@ export default function JobsPage() {
     fetchJobs();
   }, []);
 
+  const runJob = (jobId: number) => {
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        job.id === jobId ? { ...job, status: "completed" } : job
+      )
+    );
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">All Jobs</h1>
@@ -35,6 +43,15 @@ export default function JobsPage() {
             <p><strong>Status:</strong> {job.status}</p>
             <p><strong>Priority:</strong> {job.priority}</p>
             <p><strong>Created At:</strong> {new Date(job.createdAt).toLocaleString()}</p>
+
+            {job.status === "pending" && (
+              <button
+                onClick={() => runJob(job.id)}
+                className="px-2 py-1 border rounded mt-2"
+              >
+                Run Job
+              </button>
+            )}
           </div>
         ))}
       </div>
